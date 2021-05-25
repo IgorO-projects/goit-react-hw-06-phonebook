@@ -1,7 +1,7 @@
 import types from './phonebook-types';
 import { v4 as uuidv4 } from 'uuid';
 
-export const handlePhoneAdd = contact => ({
+export const handleContactAdd = contact => ({
     type: types.ADD,
     payload: {
         id: uuidv4(),
@@ -10,7 +10,12 @@ export const handlePhoneAdd = contact => ({
     }
 })
 
-export const deletedContactbyId = id => ({
+export const deletedContact = id => ({
     type: types.DELETE,
     payload: id,
+})
+
+export const filteredContact = event => ({
+    type: types.FILTER,
+    payload: event.currentTarget.value,
 })

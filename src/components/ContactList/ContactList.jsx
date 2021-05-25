@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import styles from './ContactList.module.css';
+import { deletedContact } from '../../redux/actions/phonebook-actions';
 
 const ContactList = ({ renderedContacts, deletedContactbyId }) => {
     return (
@@ -13,9 +15,10 @@ const ContactList = ({ renderedContacts, deletedContactbyId }) => {
                 className={styles.list__text}
                 >{contact.name}: {contact.number}</span>
                 <button
+                id={contact.id}
                 className={styles.list__button}
                 type="button"
-                onClick={()=> {deletedContactbyId(contact.id)}}
+                onClick={deletedContactbyId}
                 >delete</button>
               </li>
             )
@@ -28,4 +31,37 @@ ContactList.propTypes = {
     renderedContacts: PropTypes.array.isRequired,
 };
 
-export default ContactList;
+// const filteredContacts = () => {
+//   const { filter, contacts } = this.state;
+//   const normalizedFilter = filter.toLowerCase();
+  
+//   if(filter) {
+//     return contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter));
+//   }
+//   return contacts;
+// }
+
+const mapStateToProps = state => {
+  const { filter, contacts } = state;
+  console.log(state);
+  
+  if(filter) {
+    const normalizedFilter = filter.toLowerCase(); 
+    const filtredContacts = contacts.items.filter(contact => contact.name.toLowerCase().includes(normalizedFilter));
+
+    return {
+      renderedContacts: filtredContacts,
+    }
+  }  
+
+  return {
+    renderedContacts: contacts.items,
+  }
+ 
+}
+
+const mapDispatchToProps = dispatch => ({
+  deletedContactbyId: event => {dispatch(deletedContact(event.currentTarget.id))}
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactList);

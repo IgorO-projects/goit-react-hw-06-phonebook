@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
+import { connect } from 'react-redux';
 import styles from './ContactForm.module.css';
+import { handleContactAdd } from '../../redux/actions/phonebook-actions';
 
 class ContactForm extends Component {
   state = {
@@ -70,4 +72,8 @@ ContactForm.propTypes = {
     handlePhoneAdd: PropTypes.func.isRequired,
 }
 
-export default ContactForm;
+const mapDispatchToProps = dispatch => ({
+  handlePhoneAdd: (name) => dispatch(handleContactAdd(name)),
+})
+
+export default connect(null, mapDispatchToProps)(ContactForm);
