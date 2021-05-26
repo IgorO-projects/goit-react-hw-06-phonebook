@@ -15,15 +15,25 @@ class ContactForm extends Component {
     this.setState({ [name]: value });
   };
 
+  nameCheked = ( contacts, name ) => {
+    return contacts.find(contact => name === contact.name);
+  }
+
   onSubmit = event => {
     event.preventDefault();
 
     const { name, number } = this.state;
-    const { handlePhoneAdd } = this.props;
+    const { handlePhoneAdd, contacts } = this.props;
     const contact = { name, number };
+
+    if(this.nameCheked(contacts.items, name)) {
+        alert(`${name} is already in Phonebook`)
+        return;
+      }   
 
     handlePhoneAdd(contact)
   }
+
   
   render() {
 
@@ -72,8 +82,10 @@ ContactForm.propTypes = {
     handlePhoneAdd: PropTypes.func.isRequired,
 }
 
+const mapStateToProps = state => state;
+
 const mapDispatchToProps = dispatch => ({
   handlePhoneAdd: (name) => dispatch(handleContactAdd(name)),
 })
 
-export default connect(null, mapDispatchToProps)(ContactForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
