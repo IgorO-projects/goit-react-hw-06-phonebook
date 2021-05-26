@@ -43,11 +43,9 @@ ContactList.propTypes = {
 
 const mapStateToProps = state => {
   const { contacts } = state;
-  console.log(state);
   
   if(contacts.filter) {
     const normalizedFilter = contacts.filter.toLowerCase(); 
-    console.log(normalizedFilter);
     const filtredContacts = contacts.items.filter(contact => contact.name.toLowerCase().includes(normalizedFilter));
 
     return {
